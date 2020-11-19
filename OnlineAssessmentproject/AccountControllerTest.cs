@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OnlineAssessmentApplication.DomainModel;
 using OnlineAssessmentApplication.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,11 @@ namespace OnlineAssessmentproject
     {
         readonly UserRepository userRepository;
         readonly AssessmentDbContext db;
+        readonly TestRepository testRepository;
         public AccountControllerTest()
         {
             this.userRepository = new UserRepository();
+            this.testRepository = new TestRepository();
             this.db = new AssessmentDbContext();
         }
         [TestMethod]
@@ -57,6 +60,36 @@ namespace OnlineAssessmentproject
             {
                 
                 userRepository.Delete(id);
+                value = true;
+            }
+            Assert.IsTrue(value);
+        }
+
+
+        [TestMethod]
+        public void CreateNewTest() //To create new test
+        {
+            testRepository.CreateNewTest(new Test() { TestName = "Assessment", UserId = 6, Subject = 3, Grade = 6, TestDate = new DateTime(2020, 11, 19, 11, 50, 0), StartTime = new DateTime(2020, 11, 19, 11, 50, 0), EndTime = new DateTime(2020, 11, 19, 12, 50, 0) });
+            IEnumerable<Test> fetchedData = db.Tests.Where(data => data.TestId == 6)?.ToList();
+            Assert.IsNotNull(fetchedData);
+        }
+        [TestMethod]
+        public void TestEditTest()
+        {
+            int id = 4;
+            Test test = testRepository.GetTestByTestId(id);
+            Assert.IsNotNull(test);
+        }
+        [TestMethod]
+        public void TestDeleteTest()
+        {
+            bool value = false;
+            int id = 4;
+            Test test = testRepository.GetTestByTestId(id);
+            if (test != null)
+            {
+
+                testRepository.DeleteTest(id);
                 value = true;
             }
             Assert.IsTrue(value);

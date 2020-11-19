@@ -10,12 +10,15 @@ namespace OnlineAssessmentApplication.ViewModel
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Name required")]
+        
         public string Name { get; set; }
         [Required]
         [EmailAddress(ErrorMessage = "Please enter valid Email Id")]
         [Display(Name = "Email ID")]
+        
         public string EmailID { get; set; }
         [Required]
+        
         public string Password { get; set; }
 
         [Required]
@@ -32,9 +35,9 @@ namespace OnlineAssessmentApplication.ViewModel
         [Range(1,4)]
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int ModifiedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public int ModifiedBy { get; set; }
 
 
     }

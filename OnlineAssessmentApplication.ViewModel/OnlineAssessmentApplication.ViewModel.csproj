@@ -54,6 +54,8 @@
     <Compile Include="CreateTestViewModel.cs" />
     <Compile Include="CreateViewModel.cs" />
     <Compile Include="EditTestViewModel.cs" />
+    <Compile Include="EditUserPasswordViewModel.cs" />
+    <Compile Include="EditUserViewModel.cs" />
     <Compile Include="TestViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

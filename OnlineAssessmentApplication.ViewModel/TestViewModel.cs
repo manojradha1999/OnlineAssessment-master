@@ -5,9 +5,10 @@ namespace OnlineAssessmentApplication.ViewModel
 {
     public class TestViewModel
     {
+
         public int TestId { get; set; }
         public int UserId { get; set; }
-
+        [MaxLength(25, ErrorMessage = "Only 25 characters allowed")]
         [Display(Name = "Name of the Test")]
         [Required(ErrorMessage = "Test name is required.")]
         public string TestName { get; set; }
@@ -16,6 +17,7 @@ namespace OnlineAssessmentApplication.ViewModel
         [Display(Name = "Date")]
         public DateTime TestDate { get; set; }
         [Required(ErrorMessage = "Subject is required.")]
+        [Range(1, 20, ErrorMessage = "Choose Subject")]
         public Subject Subject { get; set; }
         [Required(ErrorMessage = "Choose Start Time")]
         [Display(Name = "Start Time")]
@@ -36,7 +38,9 @@ namespace OnlineAssessmentApplication.ViewModel
         [Required]
         public int ModifiedBy { get; set; }
         [Required]
+        [Range(1, 10, ErrorMessage = "Choose Grade")]
         public Grade Grade { get; set; }
+
 
     }
     public enum Grade

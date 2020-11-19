@@ -8,45 +8,43 @@ using System.Linq;
 
 namespace OnlineAssessmentApplication.ServiceLayer
 {
- /// <summary>
-/// Passing the values from Accountcontroller to UserRepository.
-/// </summary>
     public interface IUserService
     {
         UserViewModel ValidateUser(UserViewModel user);
         void Create(User user);
-        void Delete(int userId);
-        User Edit(int userId);
+        void Delete(int UserId);
+        User Edit(int UserId);
 
         void Update(User user);
         IEnumerable<User> Display(string serach);
-        bool CheckMailId(string EmailId);
-        IEnumerable<Role> RoleDisplay();
-        long GenerateRandomNumber();
 
         string FindRole(UserViewModel user);
+        UserViewModel GetUserByUserId(int id);
+        void UpdateUserDetails(EditUserViewModel userData);
+        void UpdateUserPasswordDetails(EditUserPasswordViewModel dataToEdit);
+        IEnumerable<Role> RoleDisplay();
+        bool CheckMailId(string EmailId);
     }
     public class UserService : IUserService
     {
         readonly IUserRepository userRepository;
-        public UserService(IUserRepository userRepository)
+        public UserService()
         {
-            this.userRepository = userRepository;
+            this.userRepository = new UserRepository();
         }
         public UserViewModel ValidateUser(UserViewModel user)
         {
             User fetchedData = null;
-            fetchedData= userRepository.ValidateUser(user).FirstOrDefault();
+            fetchedData = userRepository.ValidateUser(user).FirstOrDefault();
             UserViewModel sensitiveData = null;
             if (fetchedData != null)
             {
                 var config = new MapperConfiguration(cfg => { cfg.CreateMap<User, UserViewModel>(); cfg.IgnoreUnmapped(); });
                 IMapper mapper = config.CreateMapper();
                 sensitiveData = mapper.Map<User, UserViewModel>(fetchedData);
+
             }
             return sensitiveData;
-
-
         }
         public string FindRole(UserViewModel user)
         {
@@ -58,40 +56,62 @@ namespace OnlineAssessmentApplication.ServiceLayer
             user.CreatedDate = DateTime.Now.Date;
             userRepository.Create(user);
         }
-        public void Delete(int userId)
+        public void Delete(int UserId)
         {
-            userRepository.Delete(userId);
+            userRepository.Delete(UserId);
         }
-        public User Edit(int userId)
+        public User Edit(int UserId)
         {
-            return userRepository.Edit(userId);
+            return userRepository.Edit(UserId);
         }
         public void Update(User user)
         {
-            
             user.ModifiedDate = DateTime.Now.Date;
             userRepository.Update(user);
         }
 
         public IEnumerable<User> Display(string serach)
         {
-            return userRepository.Display(serach);
+            return (userRepository.Display(serach));
         }
-
-        public bool CheckMailId(string EmailId)
+        public UserViewModel GetUserByUserId(int id)
         {
-            return (userRepository.CheckMailId(EmailId));
+            User userDetail = userRepository.GetUserByUserId(id);
+            UserViewModel fetchedData = null;
+            if (userDetail != null)
+            {
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<User, UserViewModel>(); cfg.IgnoreUnmapped(); });
+                IMapper mapper = config.CreateMapper();
+                fetchedData = mapper.Map<User, UserViewModel>(userDetail);
+
+            }
+            return fetchedData;
         }
-
-        public long GenerateRandomNumber()
+        public void UpdateUserDetails(EditUserViewModel userData)
         {
-            Random random = new Random();
-            long number = random.Next(11000, 19000);
-            return number;
+            User dataToEdit = null;
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<EditUserViewModel, User>(); cfg.IgnoreUnmapped(); });
+            IMapper mapper = config.CreateMapper();
+            dataToEdit = mapper.Map<EditUserViewModel, User>(userData);
+            userRepository.UpateUserDetails(dataToEdit);
+
+
+        }
+        public void UpdateUserPasswordDetails(EditUserPasswordViewModel dataToEdit)
+        {
+            User fetchedData = null;
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<EditUserPasswordViewModel, User>(); cfg.IgnoreUnmapped(); });
+            IMapper mapper = config.CreateMapper();
+            fetchedData = mapper.Map<EditUserPasswordViewModel, User>(dataToEdit);
+            userRepository.UpdateUserPasswordDetails(fetchedData);
         }
         public IEnumerable<Role> RoleDisplay()
         {
             return (userRepository.RoleDisplay());
+        }
+        public bool CheckMailId(string EmailId)
+        {
+            return (userRepository.CheckMailId(EmailId));
         }
     }
 }

@@ -277,6 +277,7 @@
     <Compile Include="Filters\AuthenticationFilterAttribute.cs" />
     <Compile Include="Filters\LogCustomExceptionFilterAttribute.cs" />
     <Compile Include="Filters\StudentAuthorizeFilterAttribute.cs" />
+    <Compile Include="Filters\UserAuthorizationFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -293,6 +294,8 @@
     <Content Include="Views\Account\EditPassword.cshtml" />
     <Content Include="Views\Test\CreateTest.cshtml" />
     <Content Include="Views\Test\EditTest.cshtml" />
+    <Content Include="Views\Account\ChangeProfile.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
